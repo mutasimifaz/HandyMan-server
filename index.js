@@ -114,7 +114,7 @@ async function run() {
             const tool = req.body;
             const result = await toolCollection.insertOne(tool);
         })
-        app.delete('/tool/:id', verifyJWT, verifyAdmin, async (req, res) => {
+        app.delete('/tool/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const result = await toolCollection.deleteOne(filter);
@@ -275,11 +275,21 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         });
-        app.get('/reviews/:toolId', async (req, res) => {
-            const toolId = req.params.toolId;
-            const result = await reviewCollection.findOne({ toolId: toolId })
-            res.send(result);
-        })
+        // app.get('/reviews/:toolId', async (req, res) => {
+        //     const toolId = req.params.toolId;
+        //     const result = await reviewCollection.findOne({ toolId: toolId })
+        //     res.send(result);
+        // })
+        app.get("/reviews/:toolId", async (req, res) => {
+            const currentPage = parseInt(req.query.currentPage);
+            const limit = parseInt(req.query.limit);
+            const result = await reviewCollection
+              .find({ toolId: req.params.toolId })
+              .skip(currentPage * limit)
+              .limit(limit)
+              .toArray();
+            res.json(result);
+          });
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
