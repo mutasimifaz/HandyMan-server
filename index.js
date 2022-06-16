@@ -269,15 +269,23 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         });
+        app.get('/reviews', async (req, res) => {
+            const query = {};
+            const cursor = reviewCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
+        app.get('/reviews/:toolId', async (req, res) => {
+            const toolId = req.params.toolId;
+            const result = await reviewCollection.findOne({ toolId: toolId })
+            res.send(result);
+        })
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
             res.send(result)
         })
-        // app.get('/available', async (req, res) => {
-        //     const tools = await toolCollection.find().toArray();
-        //     res.send(tools)
-        // })
+        
 
     }
     finally {
