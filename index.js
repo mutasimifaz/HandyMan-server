@@ -124,18 +124,7 @@ async function run() {
       const result = await toolCollection.findOne(query);
       res.send(result);
     });
-    app.get("/wumpus", async (req, res) => {
-      const query = {};
-      const cursor = wumpusCollection.find(query);
-      const tools = await cursor.toArray();
-      res.send(tools);
-    });
-    app.get("/wumpus/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const result = await wumpusCollection.findOne(query);
-      res.send(result);
-    });
+
     app.post("/tool", verifyJWT, verifyAdmin, async (req, res) => {
       const tool = req.body;
       const result = await toolCollection.insertOne(tool);
@@ -321,6 +310,18 @@ async function run() {
     app.post("/reviews", async (req, res) => {
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+    app.get("/wumpus", async (req, res) => {
+      const query = {};
+      const cursor = wumpusCollection.find(query);
+      const tools = await cursor.toArray();
+      res.send(tools);
+    });
+    app.get("/wumpus/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await wumpusCollection.findOne(query);
       res.send(result);
     });
   } finally {
