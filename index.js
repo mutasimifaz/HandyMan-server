@@ -318,18 +318,13 @@ async function run() {
       const tools = await cursor.toArray();
       res.send(tools);
     });
-    app.get("/wumpus/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const result = await wumpusCollection.findOne(query);
-      res.send(result);
-    });
   } finally {
   }
 }
 run().catch(console.dir);
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
