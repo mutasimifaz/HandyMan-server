@@ -330,6 +330,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send(`Elite Toolboxes's server is running`);
 });
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", function () {
   console.log(`Elite Toolboxes's listening on port ${port}`);
 });
